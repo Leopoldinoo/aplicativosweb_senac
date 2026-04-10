@@ -55,6 +55,18 @@ export default function Sidebar() {
         >
           Server Action
         </Link>
+        <Link
+          href="/calculadora"
+          className="text-white hover:text-blue-400 hover:underline text-justify"
+        >
+          App Calculadora
+        </Link>
+        <Link
+          href="/bhaskara"
+          className="text-white hover:text-blue-400 hover:underline text-justify"
+        >
+          App Bhaskara
+        </Link>
       </nav>
     </div>
   );
