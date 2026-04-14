@@ -67,6 +67,12 @@ export default function Sidebar() {
         >
           App Bhaskara
         </Link>
+        <Link
+          href="/tarefas"
+          className="text-white hover:text-blue-400 hover:underline text-justify"
+        >
+          App Tarefas
+        </Link>
       </nav>
     </div>
   );
