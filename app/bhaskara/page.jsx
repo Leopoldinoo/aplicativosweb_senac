@@ -1,6 +1,7 @@
 "use client";
 import { useState } from "react";
 import { bhaskara } from "../../actions/equacao/bhaskara";
+import Sidebar from "../components/Sidebar";
 
 export default function BhaskaraPage() {
   const [a, setA] = useState("");
@@ -33,8 +34,10 @@ export default function BhaskaraPage() {
   };
 
   return (
-    <div className="min-h-screen bg-[#151515] flex items-center justify-center">
-      <div className="bg-blue-500 p-6 rounded-lg w-80">
+    <div className="flex min-h-screen bg-[#151515]">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center">
+        <div className="bg-blue-500 p-6 rounded-lg w-80">
         <h1 className="text-white text-xl font-bold mb-3 text-center">
           Bhaskara
         </h1>
@@ -90,6 +93,7 @@ export default function BhaskaraPage() {
         {erro && (
           <div className="bg-red-200 p-2 rounded text-center">{erro}</div>
         )}
+        </div>
       </div>
     </div>
   );

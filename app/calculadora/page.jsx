@@ -4,6 +4,7 @@ import { soma } from "../../actions/calculadora/soma";
 import { subtracao } from "../../actions/calculadora/subtracao";
 import { multiplicar } from "../../actions/calculadora/multiplicar";
 import { dividir } from "../../actions/calculadora/dividir";
+import Sidebar from "../components/Sidebar";
 
 export default function Calculadora() {
   const [a, setA] = useState("");
@@ -37,8 +38,10 @@ export default function Calculadora() {
   };
 
   return (
-    <div className="min-h-screen bg-[#151515] flex items-center justify-center">
-      <div className="bg-blue-500 p-8 rounded-lg w-80">
+    <div className="flex min-h-screen bg-[#151515]">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center">
+        <div className="bg-blue-500 p-8 rounded-lg w-80">
         <h1 className="text-white text-2xl font-bold mb-4 text-center">
           Calculadora
         </h1>
@@ -98,6 +101,7 @@ export default function Calculadora() {
             {resultado}
           </div>
         )}
+        </div>
       </div>
     </div>
   );

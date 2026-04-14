@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { servidor } from "/actions/servidor";
+import Sidebar from "../components/Sidebar";
 export default function Page() {
   let contador = 0;
   async function ChamaServidor() {
@@ -30,8 +31,10 @@ export default function Page() {
     }
   }
   return (
-    <div className="bg-black min-h-screen min-w-screen flex items-center justify-center">
-      <div className="flex flex-col h-80 w-100 rounded-lg border-4 border-green-400 bg-white items-center justify-center gap-4">
+    <div className="flex min-h-screen bg-black">
+      <Sidebar />
+      <div className="flex-1 flex items-center justify-center">
+        <div className="flex flex-col h-80 w-100 rounded-lg border-4 border-green-400 bg-white items-center justify-center gap-4">
         <h1 className="text-2xl font-bold text-black flex items-center justify-center">
           Server Action
         </h1>
@@ -55,6 +58,7 @@ export default function Page() {
         >
           Dashboard
         </Link>
+        </div>
       </div>
     </div>
   );
