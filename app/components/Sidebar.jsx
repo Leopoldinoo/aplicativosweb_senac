@@ -77,7 +77,7 @@ export default function Sidebar() {
           href="/tarefas"
           className="text-white hover:text-blue-400 hover:underline text-justify"
         >
-          App Ttarefas
+          App Tarefas
         </Link>
       </nav>
     </div>
