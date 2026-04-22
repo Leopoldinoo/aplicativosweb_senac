@@ -68,10 +68,16 @@ export default function Sidebar() {
           App Bhaskara
         </Link>
         <Link
+          href="/alunos"
+          className="text-white hover:text-blue-400 hover:underline text-justify"
+        >
+          App Alunos
+        </Link>
+        <Link
           href="/tarefas"
           className="text-white hover:text-blue-400 hover:underline text-justify"
         >
-          App Tarefas
+          App Ttarefas
         </Link>
       </nav>
     </div>

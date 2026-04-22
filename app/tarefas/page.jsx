@@ -10,8 +10,60 @@ import {
   Clock,
 } from "lucide-react";
 import Sidebar from "../components/Sidebar";
-
 export default function TarefasPage() {
+  const [tarefas, setTarefas] = useState([]);
+
+  const [tarefa, setTarefa] = useState("");
+  const [data, setData] = useState("");
+  const [horario, setHorario] = useState("");
+  const [status, setStatus] = useState("Pendente");
+
+  const [editIndex, setEditIndex] = useState(null);
+  function limparCampos() {
+    setTarefa("");
+    setData("");
+    setHorario("");
+    setStatus("Pendente");
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault();
+    const novaTarefa = { tarefa, data, horario, status };
+
+    const novasTarefas = tarefas.slice();
+
+    if (editIndex !== null) {
+      novasTarefas[editIndex] = novaTarefa;
+      setEditIndex(null);
+    } else {
+      novasTarefas.push(novaTarefa);
+    }
+    setTarefas(novasTarefas);
+    limparCampos();
+  }
+
+  // Função Editar
+  function handleEdit(index) {
+    const tarefa = tarefas[index];
+
+    setTarefa(tarefa.tarefa);
+    setData(tarefa.data);
+    setHorario(tarefa.horario);
+    setStatus(tarefa.status);
+    setEditIndex(index);
+  }
+
+  // Função Deletar
+  function handleDelete(index) {
+    const novasTarefas = [];
+    //recria a lista sem oque deve ser excluído
+    for (let i = 0; i < tarefas.length; i++) {
+      if (i !== index) novasTarefas.push(tarefas[i]);
+    }
+    setTarefas(novasTarefas);
+  }
+
+  //TELA
   return (
     <div className="min-h-screen w-full bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex p-0">
       <div className="fixed left-0 top-0 h-full z-10">
@@ -25,19 +77,17 @@ export default function TarefasPage() {
               <div className="bg-blue-100 p-3 rounded-2xl">
                 <CheckCircle2 className="text-blue-600" size={28} />
               </div>
+
               <div>
-                <h1 className="text-gray-900 font-bold text-3xl">
-                  Minhas Tarefas
+                <h1 className="text-gray-900 font-bold text-2xl">
+                  Cadastro de Tarefas
                 </h1>
+
                 <p className="text-gray-500 text-sm mt-1">
-                  Organize e gerencie suas atividades diárias
+                  gerencie suas tarefas e organize seu dia a dia de forma
+                  eficiente
                 </p>
               </div>
-            </div>
-            <div className="bg-blue-50 px-4 py-2 rounded-xl">
-              <span className="text-blue-600 font-semibold text-sm">
-                2 tarefas
-              </span>
             </div>
           </header>
 
@@ -47,13 +97,18 @@ export default function TarefasPage() {
               Nova tarefa
             </h2>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <form
+              onSubmit={handleSubmit}
+              className="grid grid-cols-1 md:grid-cols-2 gap-4"
+            >
               <div className="md:col-span-2 flex flex-col gap-2">
                 <label className="text-sm font-semibold text-gray-700">
                   Tarefa
                 </label>
                 <input
                   type="text"
+                  value={tarefa}
+                  onChange={(e) => setTarefa(e.target.value)}
                   placeholder="Descreva a tarefa..."
                   className="border border-gray-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all text-gray-600 bg-white"
                 />
@@ -66,6 +121,8 @@ export default function TarefasPage() {
                 </label>
                 <input
                   type="date"
+                  value={data}
+                  onChange={(e) => setData(e.target.value)}
                   className="border border-gray-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-600 bg-white"
                 />
               </div>
@@ -77,6 +134,8 @@ export default function TarefasPage() {
                 </label>
                 <input
                   type="time"
+                  value={horario}
+                  onChange={(e) => setHorario(e.target.value)}
                   className="border border-gray-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-600 bg-white"
                 />
               </div>
@@ -85,17 +144,22 @@ export default function TarefasPage() {
                 <label className="text-sm font-semibold text-gray-700">
                   Status
                 </label>
-                <select className="border border-gray-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-600 bg-white">
+                <select
+                  value={status}
+                  onChange={(e) => setStatus(e.target.value)}
+                  className="border border-gray-300 rounded-xl p-3 outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-gray-600 bg-white"
+                >
                   <option>Pendente</option>
+
                   <option>Em andamento</option>
+
                   <option>Concluído</option>
                 </select>
               </div>
-            </div>
-
-            <button className="mt-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl flex items-center gap-2 transition-all shadow-lg hover:shadow-xl">
-              <Plus size={20} /> Adicionar Tarefa
-            </button>
+              <button className="mt-6 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold py-3 px-6 rounded-xl col-span-2 text-center gap-2 transition-all shadow-lg hover:shadow-xl">
+                {editIndex !== null ? "Atualizar tarefa" : "Adicionar tarefa"}
+              </button>
+            </form>
           </section>
 
           <section className="border border-gray-200 rounded-2xl p-6 shadow-sm">
@@ -103,72 +167,41 @@ export default function TarefasPage() {
               <h2 className="text-gray-800 font-bold text-lg">
                 Tarefas cadastradas
               </h2>
-              <div className="flex gap-2">
-                <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold">
-                  1 em andamento
-                </span>
-                <span className="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-semibold">
-                  1 pendente
-                </span>
-              </div>
             </div>
 
             <div className="overflow-x-auto">
-              <table className="w-full text-left">
+              <table className="w-full">
                 <thead>
                   <tr className="text-gray-500 text-sm border-b border-gray-200">
                     <th className="pb-3 font-semibold">Tarefa</th>
                     <th className="pb-3 font-semibold">Data</th>
                     <th className="pb-3 font-semibold">Horário</th>
                     <th className="pb-3 font-semibold">Status</th>
-                    <th className="pb-3 font-semibold text-right">Ações</th>
                   </tr>
                 </thead>
-                <tbody className="text-gray-600">
-                  <tr className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                    <td className="py-4 font-medium">
-                      Estudar para a Competições Senac 20...
-                    </td>
-                    <td className="py-4 text-gray-500">16/04/2026</td>
-                    <td className="py-4 text-gray-500">13:00</td>
-                    <td className="py-4">
-                      <span className="bg-blue-100 text-blue-600 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit">
-                        <Circle size={12} fill="currentColor" />
-                        Em andamento
-                      </span>
-                    </td>
-                    <td className="py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                          <Pencil size={18} />
+                <tbody>
+                  {tarefas.map((tarefa, index) => (
+                    <tr key={index} className="text-black">
+                      <td className="border p-2">{tarefa.tarefa}</td>
+                      <td className="border p-2">{tarefa.data}</td>
+                      <td className="border p-2">{tarefa.horario}</td>
+                      <td className="border p-2">{tarefa.status}</td>
+                      <td className="border p-2 text-center">
+                        <button
+                          onClick={() => handleEdit(index)}
+                          className="text-red-500 hover:text-red-700 mr-2"
+                        >
+                          Editar
                         </button>
-                        <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                          <Trash2 size={18} />
+                        <button
+                          onClick={() => handleDelete(index)}
+                          className="text-blue-500 hover:text-blue-700"
+                        >
+                          Deletar
                         </button>
-                      </div>
-                    </td>
-                  </tr>
-                  <tr className="border-b border-gray-100 last:border-0 hover:bg-gray-50 transition-colors">
-                    <td className="py-4 font-medium">Lavar o Zeus</td>
-                    <td className="py-4 text-gray-500">15/04/2026</td>
-                    <td className="py-4 text-gray-500">15:07</td>
-                    <td className="py-4">
-                      <span className="bg-yellow-100 text-yellow-600 px-3 py-1 rounded-full text-xs font-semibold flex items-center gap-1 w-fit">
-                        <Circle size={12} fill="currentColor" />
-                        Pendente
-                      </span>
-                    </td>
-                    <td className="py-4 text-right">
-                      <div className="flex items-center justify-end gap-2">
-                        <button className="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
-                          <Pencil size={18} />
-                        </button>
-                        <button className="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
-                          <Trash2 size={18} />
-                        </button>
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
+                  ))}
                 </tbody>
               </table>
             </div>
